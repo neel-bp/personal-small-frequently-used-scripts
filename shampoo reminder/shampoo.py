@@ -1,11 +1,19 @@
 from datetime import date
 import yaml
 from plyer import notification
+import os
 
-conf=yaml.safe_load(open('todate.yaml'))
+if os.path.exists('todate.yaml'):
+	conf=yaml.safe_load(open('todate.yaml'))
+	shampoodate=conf['lastshampooed']
+else:	
+	shampoodict={}
+	shampoodict.update({'lastshampooed':date.today(), 'threshold':3})
+	yaml.safe_dump(shampoodict, open('todate.yaml','w+'))
+	conf=yaml.safe_load(open('todate.yaml'))
+	shampoodate=conf['lastshampooed']
+
 todaydate=date.today()
-shampoodate=conf['lastshampooed']
-
 diff=date.today()-shampoodate
 
 if diff.days == conf['threshold']:
