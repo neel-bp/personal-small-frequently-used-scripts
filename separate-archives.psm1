@@ -1,7 +1,7 @@
 function separateArchive{
     $dirs = (ls -Name)
     foreach ($dir in $dirs){
-        .\7z a "$($dir).zip" "$($dir)"
+        7z a "$($dir).zip" "$($dir)"
     }
 }
 
