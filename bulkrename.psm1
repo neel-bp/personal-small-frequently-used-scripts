@@ -17,7 +17,7 @@ $sourceArr = Get-Content $sourcetemp.FullName
 $targetArr = Get-Content $targettemp.FullName
 
 foreach ($line in $sourceArr){
-    Rename-Item -LiteralPath $line -NewName $targetArr[$sourceArr.IndexOf($line)]
+    Rename-Item -LiteralPath $line -NewName $targetArr[$sourceArr.IndexOf($line)] -ErrorAction Ignore
 }
 Remove-Item $sourcetemp.FullName -Force
 Remove-Item $targettemp.FullName -Force
