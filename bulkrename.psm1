@@ -1,14 +1,16 @@
-﻿function bulkrename($editor="vim") {
+﻿function bulkrename($editor="vimuNONE", $editorArgs="") {
 $sourcetemp = New-TemporaryFile
 $targettemp = New-TemporaryFile
 
 ls -Name | Out-File $sourcetemp.FullName -Encoding utf8
 ls -Name | Out-File $targettemp.FullName -Encoding utf8
 
-if ($editor -eq "vim"){
-    Start-Process -FilePath "$($editor)" -ArgumentList "-u","NONE","`"$($targettemp.FullName)`"" -Wait -NoNewWindow
-} else {
-    Start-Process -FilePath "$($editor)" -ArgumentList "`"$($targettemp.FullName)`"" -Wait
+if ($editor -eq "vimuNONE"){
+    Start-Process -FilePath "vim" -ArgumentList "-u","NONE","`"$($targettemp.FullName)`"" -Wait -NoNewWindow
+} elseif($editor -ne "vimuNONE" -and $editorArgs -ne "") {
+    Start-Process -FilePath "$($editor)" -ArgumentList "`"$($targettemp.FullName)`"","$($editorArgs)" -Wait -NoNewWindow
+} elseif($editor -ne "vimuNONE" -and $editorArgs -eq "") {
+    Start-Process -FilePath "$($editor)" -ArgumentList "`"$($targettemp.FullName)`"" -Wait -NoNewWindow
 }
 
 $sourceArr = Get-Content $sourcetemp.FullName
