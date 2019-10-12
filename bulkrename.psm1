@@ -1,9 +1,17 @@
-﻿function bulkrename($editor="vimuNONE", $editorArgs="", $pattern="") {
+﻿function bulkrename($editor="vimuNONE", $editorArgs="", $pattern="", $attrs="") {
 $sourcetemp = New-TemporaryFile
 $targettemp = New-TemporaryFile
 
+if ($attrs -eq ""){
 (ls -Path "$($pattern)").Name,"" | Out-File $sourcetemp.FullName -Encoding utf8
 (ls -Path "$($pattern)").Name,"" | Out-File $targettemp.FullName -Encoding utf8
+} elseif ($attrs -eq "all"){
+(ls -Path "$($pattern)" -Attributes "d","a","r","h").Name,"" | Out-File $sourcetemp.FullName -Encoding utf8
+(ls -Path "$($pattern)" -Attributes "d","a","r","h").Name,"" | Out-File $targettemp.FullName -Encoding utf8
+} else {
+(ls -Path "$($pattern)" -Attributes $attrs).Name,"" | Out-File $sourcetemp.FullName -Encoding utf8
+(ls -Path "$($pattern)" -Attributes $attrs).Name,"" | Out-File $targettemp.FullName -Encoding utf8
+}
 
 if ($editor -eq "vimuNONE"){
     Start-Process -FilePath "vim" -ArgumentList "-u","NONE","`"$($targettemp.FullName)`"" -Wait -NoNewWindow
